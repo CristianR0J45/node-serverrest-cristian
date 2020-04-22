@@ -3,3 +3,5 @@
 
 ## Dependencias
 "npm install"
+"npm i mongoose-unique-validator"
+"npm i bcrypt"

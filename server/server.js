@@ -1,53 +1,58 @@
-const puerto = require('./config/config');
+require('./config/config');
+
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
+
 const bodyParser = require('body-parser');
 
-// Midelware
-app.use(bodyParser.urlencoded({ extended: false }));
 
+// Midelware
+
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
+app.use(require('./routes/usuario'));
 
-    res.json("Hola mundo");
-});
+// app.get('/', function(req, res) {
 
-// get usuarios
-app.get('/usuarios', function(req, res) {
+//     res.json("Hola mundo");
+// });
 
-    res.json("Cristian");
-});
 
-// crear usuarios
-app.post('/usuarios', function(req, res) {
-    let body = req.body;
+// app.post('/usuariosch', (req, res) => {
+//     var body = req.body;
+//     res.json({ persona: body });
+//     // if (body.nombre === undefined) {
+//     //     res.status(400).json({
+//     //         ok: false,
+//     //         mensaje: "Falta el nombre",
+//     //         persona: body
+//     //     })
+//     // } else {
+//     //     res.json({ persona: body });
+//     // }
+// });
 
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: "Falta el nombre",
-            err: "No fue posible registrar"
-        })
-    } else {
-        res.json({ persona: body });
+
+
+
+mongoose.connect('mongodb://localhost:27017/cafe', (err, res) => {
+    if (err) {
+        throw err;
     }
+
+    console.log('Conexión exitosa');
+    // useNewUrlParser: true,
+    // useUnifiedTopology: true
+
 });
 
-// modificar usuarios
-app.put('/usuarios/:id', function(req, res) {
-    let id = req.params.id;
-
-    res.json({
-        id
-    });
-});
-
-// modificar usuarios
-app.delete('/usuarios', function(req, res) {
-
-    res.json("eliminar");
-});
 
 app.listen(process.env.PORT, () => {
     console.log("Escuchando puerto", process.env.PORT);
